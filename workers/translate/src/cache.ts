@@ -47,5 +47,9 @@ export async function readCached(env: Env, key: string): Promise<Stored | null> 
  * is ignored on purpose: the person still has their translation, it is just not shared.
  */
 export function writeCached(env: Env, ctx: Ctx, key: string, value: Stored): void {
-  ctx.waitUntil(env.TRANSLATE_CACHE.put(key, JSON.stringify(value), { expirationTtl: TTL_SECONDS }).catch(() => undefined));
+  try {
+    ctx.waitUntil(env.TRANSLATE_CACHE.put(key, JSON.stringify(value), { expirationTtl: TTL_SECONDS }).catch(() => undefined));
+  } catch {
+    // The binding is missing or misnamed: the person still gets the translation, it is just not shared.
+  }
 }

@@ -144,6 +144,15 @@ test("a KV write that fails (daily limit) does not stop the person getting the t
   assert.equal(r.body["text"], GOOD);
 });
 
+test("a missing or misnamed KV binding does not break translation", async () => {
+  const f = fakes();
+  const env = { ...f.env } as Partial<Env>;
+  delete env.TRANSLATE_CACHE;
+  const res = await createWorker().fetch(post(), env as Env, f.ctx);
+  assert.equal(res.status, 200);
+  assert.equal(((await res.json()) as { text: string }).text, GOOD);
+});
+
 test("callers are limited per address: requests, and fresh translations separately", async () => {
   const f = fakes();
   const w = createWorker({ requestsPerMinute: 3, freshPerMinute: 2 });

@@ -9,7 +9,7 @@ binding = "AI"
 
 # The shared translation cache. Create it once (dashboard -> Storage & databases -> KV -> Create) and paste the id here.
 [[kv_namespaces]]
-binding = "TRANSLATE_STORE"
+binding = "TRANSLATE_CACHE"
 id = "d8c797dcceb64116ba5040966b62da79"
 
 [vars]
